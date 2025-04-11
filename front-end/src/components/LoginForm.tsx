@@ -8,8 +8,13 @@ const LoginForm = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios.get('http://localhost:9999/users/')
-    // const formData = { email: email, password: password };
+    const formData = { ownerEmail: email, name: password };
+    axios.post("http://localhost:9999/lists/create_list", formData)
+    .then((response) => {
+      console.log(response.data)
+    })
+    
+    // axios.get('http://localhost:9999/users/')
     // axios.post("http://localhost:9999/users/login", formData)
     // .then((res) => {
     //     setMessage(res.data);
@@ -25,7 +30,7 @@ const LoginForm = () => {
       Email:{" "}
       <input
         id="email-input"
-        type="email"
+        type="text"
         placeholder="Email"
         onChange={(e) => {
           setEmail(e.target.value);
@@ -36,7 +41,7 @@ const LoginForm = () => {
       Password:{" "}
       <input
         id="password-input"
-        type="password"
+        type="text"
         placeholder="password"
         onChange={(e) => {
           setPassword(e.target.value);

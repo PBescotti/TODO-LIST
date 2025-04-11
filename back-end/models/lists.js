@@ -4,9 +4,13 @@ const validator = require("validator");
 const ListSchema = new mongoose.Schema({
   ownerEmail: { type: String, required: true },
   name: { type: String, require: true },
-  categories: { type: Array, require: true },
+  categories: { type: Array }
 });
-const Lists = mongoose("Lists", ListSchema);
+const Lists = mongoose.model("Lists", ListSchema);
+
+async function getAllLists() {
+  return await Lists.find()
+}
 
 async function getListsFromEmail(email) {
   if (!email || !validator.isEmail(email)) return {};
@@ -17,7 +21,9 @@ async function getListFromID(id) {
   return await Lists.findById(id);
 }
 
+// DATA contains ownerMail, name
 async function createList(data) {
+  console.log(data)
   const newList = Lists(data);
 
   try {
@@ -69,4 +75,13 @@ async function moveCategory(listID, fromPosition, toPosition) {
   } catch (err) {
     return { succesS: false, error: err.message };
   }
+}
+
+module.exports = {
+  getAllLists,
+  getListsFromEmail,
+  getListFromID,
+  createList,
+  addCategory,
+  moveCategory
 }

@@ -2,7 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectToDB = require("./db");
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/userRoutes');
+const listRoutes = require('./routes/listRoutes');
 
 const app = express();
 app.use(cors());
@@ -10,13 +11,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Qualcosa è andato storto!" });
-});
-
 // Routes
 app.use('/users', userRoutes);
+app.use('/lists', listRoutes);
 
 (async () => {
   await connectToDB(); // Connessione al DB
